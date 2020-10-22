@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 
-import './dummy_data.dart';
-import './category_item.dart';
+import '../dummy_data.dart';
+import '../widgets/category_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('DeliMeal'),
-      ),
-      body: GridView(
+    return GridView(
         padding:  const EdgeInsets.all(25),   //const로 하는 이유가 뭐야?
         //Sliver 는 스크롤 가능한
         //GridDelegate 는 Grid 레이아웃 제공
@@ -30,7 +26,6 @@ class CategoriesScreen extends StatelessWidget {
           ),
         )
             .toList(),
-      ),
-    );
+      );
   }
 }
