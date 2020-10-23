@@ -1,3 +1,12 @@
+## 2020.10.23
+브랜치 tap/favorite
+
+- 처음에 실패함.
+main에서 meal_screen 과 tap_screen에 값을 넘겨주어야 두개 다 전부 반영이 되는데,
+meal_screen에는 List만 넘겨주어서, 나의 즐겨찾기가 무엇인지 반영이 동기화가 되지 않음.
+
+이래서 main에서 다른 하위 Navigation에 뿌려주는거구만..
+
 ## 2020.10.22
 강의에서는 각 SwitchListTile에다 onChange함수를 익명함수로 길게 주었지만,
 나는 짧게하려고, 함수까지 위젯함수에 포함시킴.

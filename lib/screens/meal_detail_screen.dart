@@ -1,10 +1,19 @@
+import 'package:delimeals/models/meal.dart';
 import 'package:flutter/material.dart';
 
 import '../dummy_data.dart';
 
-class MealDetailScreen extends StatelessWidget {
+class MealDetailScreen extends StatefulWidget {
   static const routeName = '/meal-detail';
+  List<Meal> favoriteMeals;
 
+  MealDetailScreen(this.favoriteMeals);
+
+  @override
+  _MealDetailScreenState createState() => _MealDetailScreenState();
+}
+
+class _MealDetailScreenState extends State<MealDetailScreen> {
   Widget buildSectionTitle(BuildContext context, String text) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
@@ -32,8 +41,19 @@ class MealDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('build');
     final mealId = ModalRoute.of(context).settings.arguments as String;
+    print('mealID $mealId');
     final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
+    print('selectedMeal ${selectedMeal.id}');
+    bool isFavorite;
+    if(widget.favoriteMeals.length > 0)
+      isFavorite = widget.favoriteMeals.firstWhere((meal) => meal.id == mealId) != null;
+    else
+      isFavorite = false;
+    print('build  $isFavorite');
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${selectedMeal.title}'),
@@ -87,11 +107,22 @@ class MealDetailScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.delete,
-        ),
+        child: Icon(isFavorite ? Icons.favorite_border : Icons.favorite),
         onPressed: () {
-          Navigator.of(context).pop(mealId);
+          setState(() {
+            print(widget.favoriteMeals.length);
+
+            isFavorite
+                ? widget.favoriteMeals.remove(selectedMeal)
+                : widget.favoriteMeals.add(selectedMeal);
+            isFavorite = !isFavorite;
+
+            for( Meal a in widget.favoriteMeals) {
+              print('${a.id}');
+            }
+            print(isFavorite);
+            print(widget.favoriteMeals.length);
+          });
         },
       ),
     );
