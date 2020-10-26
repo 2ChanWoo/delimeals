@@ -1,19 +1,15 @@
-import 'package:delimeals/models/meal.dart';
 import 'package:flutter/material.dart';
 
 import '../dummy_data.dart';
 
-class MealDetailScreen extends StatefulWidget {
+class MealDetailScreen extends StatelessWidget {
   static const routeName = '/meal-detail';
-  List<Meal> favoriteMeals;
 
-  MealDetailScreen(this.favoriteMeals);
+  final Function toggleFavorite;
+  final Function isFavorite;
 
-  @override
-  _MealDetailScreenState createState() => _MealDetailScreenState();
-}
+  MealDetailScreen(this.toggleFavorite, this.isFavorite);
 
-class _MealDetailScreenState extends State<MealDetailScreen> {
   Widget buildSectionTitle(BuildContext context, String text) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
@@ -41,19 +37,8 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
     final mealId = ModalRoute.of(context).settings.arguments as String;
-    print('mealID $mealId');
     final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
-    print('selectedMeal ${selectedMeal.id}');
-    bool isFavorite;
-    if(widget.favoriteMeals.length > 0)
-      isFavorite = widget.favoriteMeals.firstWhere((meal) => meal.id == mealId) != null;
-    else
-      isFavorite = false;
-    print('build  $isFavorite');
-
-
     return Scaffold(
       appBar: AppBar(
         title: Text('${selectedMeal.title}'),
@@ -107,23 +92,10 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(isFavorite ? Icons.favorite_border : Icons.favorite),
-        onPressed: () {
-          setState(() {
-            print(widget.favoriteMeals.length);
-
-            isFavorite
-                ? widget.favoriteMeals.remove(selectedMeal)
-                : widget.favoriteMeals.add(selectedMeal);
-            isFavorite = !isFavorite;
-
-            for( Meal a in widget.favoriteMeals) {
-              print('${a.id}');
-            }
-            print(isFavorite);
-            print(widget.favoriteMeals.length);
-          });
-        },
+        child: Icon(
+          isFavorite(mealId) ? Icons.favorite : Icons.favorite_border,
+        ),
+        onPressed: () => toggleFavorite(mealId),
       ),
     );
   }
